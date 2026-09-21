@@ -30,11 +30,12 @@ pipeline {
                     docker stop ${APP_NAME} || true
                     docker rm ${APP_NAME} || true
 
-                    docker run -d \
-                        --name ${APP_NAME} \
-                        -p ${DOCKER_PORT}:80 \
-                        --restart always \
-                        ${APP_NAME}:latest
+		    docker run -d \
+   			--name ${APP_NAME} \
+    			--network jenkins-docker_default \
+    			-p ${DOCKER_PORT}:80 \
+    			--restart always \
+    			${APP_NAME}:latest
                 '''
             }
         }
@@ -42,7 +43,7 @@ pipeline {
         stage('4. Health Check') {
             steps {
                 echo '=== Health Check ==='
-                sh 'curl -f http://host.docker.internal:${DOCKER_PORT}'
+                sh 'curl -f http://${APP_NAME}:80'
             }
         }
     }
