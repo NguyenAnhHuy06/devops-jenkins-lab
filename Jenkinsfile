@@ -42,7 +42,7 @@ pipeline {
         stage('4. Health Check') {
             steps {
                 echo '=== Health Check ==='
-                sh 'curl -f http://localhost:${DOCKER_PORT}'
+                sh 'curl -f http://host.docker.internal:${DOCKER_PORT}'
             }
         }
     }
